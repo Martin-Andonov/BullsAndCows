@@ -1,12 +1,13 @@
-import { Knex } from 'knex';
-import knexConfig from './knexfile';
-const express = require('express');
+import knex from 'knex';  
+import knexConfig from './knexfile.js';
+import express from 'express';
+
 const app = express();
 const port = 3000;
-const knexClient = Knex(knexConfig.development);
+const knexClient = knex(knexConfig.development);  
 
 app.get('/', (req, res) => {
-  res.send('Hello!');
+  res.send('Hello world!');
 });
 
 app.listen(port, () => {
