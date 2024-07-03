@@ -1,5 +1,6 @@
 // Update with your config settings.
 import {config} from 'dotenv';
+import { knexSnakeCaseMappers } from 'objection';
 config();
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
@@ -16,7 +17,9 @@ const knexConfig = {
     },
     migrations:{
       directory: './migrations'
-    }
+
+    },
+    ...knexSnakeCaseMappers()
   }
 };
 

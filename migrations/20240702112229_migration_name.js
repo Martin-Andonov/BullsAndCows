@@ -8,8 +8,8 @@ export async function up(knex){
         table.bigIncrements('id').primary();
         table.integer('number_to_guess').notNullable().checkBetween([1234, 9876]);
         table.bigInteger('number_of_attempts').notNullable().defaultTo(0); 
-        table.timestamp('start_time').notNullable().defaultTo(knex.fn.now(6));;
-        table.timestamp('end_time').notNullable().defaultTo(knex.fn.now(6));;
+        table.timestamp('start_time').notNullable().defaultTo(knex.fn.now(6));
+        table.timestamp('end_time');
       })
       .createTable('scores', function(table) {
         table.bigIncrements('id').primary();
