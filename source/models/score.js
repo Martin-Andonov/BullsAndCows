@@ -1,22 +1,19 @@
 import { Model } from 'objection';
+export class Score extends Model {
 
-export class Guess extends Model
-{
-    static tableName = "guesses";
-    id;
+    static tableName = "scores";
+    userName;
     gameId;
-    bullsCount;
-    cowsCount;
-    guess;
-
+    id;
     static relationMappings = {
         game:{
             relation: Model.BelongsToOneRelation,
             modelClass: './game.js',
             join:{
-                from: 'guesses.gameId',
+                from: 'scores.gameId',
                 to: 'games.id'
             }
         }
     }   
 }
+
