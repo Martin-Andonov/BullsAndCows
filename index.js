@@ -2,6 +2,7 @@ import knex from 'knex';
 import knexConfig from './knexfile.js';
 import express from 'express';
 import { Model } from 'objection';
+import { Score } from './source/models/score.js';
 import { Game } from './source/models/game.js';
 
 
@@ -17,16 +18,18 @@ app.get('/end', (req, res) => {
 
 
 app.get('/start', async (req, res) => {
-  await Game.query().insert({
-    
-    numberToGuess:1234,
-    numberOfAttempts:0
+  // await Score.query().insert({
 
-  });
-  res.send('Hello world!');
+  //   gameId:1,
+  //   userName:'Ivan'
+
+  // });
+  const result = await Game.query().withGraphFetched('score').findById(1)
+  res.send(result);
 
 });
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!!!!`);
 });
+

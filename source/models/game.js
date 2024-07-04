@@ -1,5 +1,5 @@
 import { Model } from 'objection';
-import { Score } from './score';
+import { Score } from './score.js';
 
 export class Game extends Model {
 
