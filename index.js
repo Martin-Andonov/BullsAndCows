@@ -16,6 +16,22 @@ app.get('/end', (req, res) => {
   res.send('Bye world!');
 });
 
+// app.get('/games/:gameID', (req, res) => {
+//   const gameID = req.params.gameID;
+//   const userName = req.query.userName;
+
+//   if (!userName || !gameID) {
+//     return res.status(400).json({ status: 'fail', message: 'Username and game ID are required' });
+//   }
+
+//   const isSaved = saveGame(userName, gameID);
+
+//   if (isSaved) {
+//     res.status(200).json({ status: 'success', message: 'Game saved successfully' });
+//   } else {
+//     res.status(500).json({ status: 'fail', message: 'Fail to save game'})
+//   }
+// });
 
 app.get('/start', async (req, res) => {
   // await Score.query().insert({
