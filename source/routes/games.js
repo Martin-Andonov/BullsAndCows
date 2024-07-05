@@ -15,6 +15,23 @@ gamesRouter.get('/viewGames', async (req, res) =>{
     res.status(200).json({ status: 'success', score: games })
 });
 
+gamesRouter.get('/gameRanking', async (req, res) =>{
+    const pageSize = req.query.pageSize;
+    const pageNumber = parseInt(req.query.page) || 1;
+    const gamesForPage = await Game.query().page(pageNumber-1, pageSize);
+    try{
+    res.status(200).json({ 
+        status: 'success', 
+        pageSize: pageSize,
+        pageNumber: pageNumber,
+        games: gamesForPage
+    })
+}
+    catch{
+    res.status(404).json({status:'fail', message: 'Game ranking not available'})
+    }
+    
+})
 gamesRouter.post('/saveGames', async (req, res) =>{
    // const {userName, gameID} = req.body;
     console.log(req.body);
@@ -45,21 +62,33 @@ gamesRouter.get('/', async (req, res) => {
       res.status(200).json({ status: 'success', games_list: games });
   });
 
+gamesRouter.post('/start', async (req, res) => {
 
-gamesRouter.get('/start', async (req, res) => {
-  // await Score.query().insert({
-  //   gameId: 1,
-  //   userName: 'Ivan'
-  // });
+  const result = await createGame(generateNumber());
 
-  try {
-    const result = await Game.query().withGraphFetched('score').findById(1);
-    res.send(result);
-  } catch (error) {
-    res.status(500).json({ status: 'fail', message: 'Failed to fetch game data' });
+  if (result) {
+    res.status(200).json({ status: 'success', gameid:result.id});
+  } else {
+    res.status(404).json({ status: 'fail', message: 'Error while creating game!' });
   }
+
 });
 
+//function to generate 4 digit number with unique digits
+function generateNumber()
+{
+  let digitsArr = ['0','1','2','3','4','5','6','7','8','9'];
+  let generatedNumber = '';
+  for(let i = 0; i < 4; i++)
+  {
+    let index = Math.floor(Math.random() * digitsArr.length);
+    generatedNumber += digitsArr[index];
+    digitsArr.splice(index, 1); 
+  }
+
+  return generatedNumber;
+  
+}
 
 
 async function geAllGamesUn(userName){
@@ -72,4 +101,10 @@ async function getAllGames(){
     return await Game.query();
 }
 
+async function createGame(generatedNumber)
+{
+  return await Game.query().insert({
+  numberToGuess:generatedNumber 
+  })
+}
   export {gamesRouter};
