@@ -4,6 +4,20 @@ import { Game } from './../models/game.js';
 const gamesRouter = Router();
 
 
+gamesRouter.get('/viewGames', async (req, res) =>{
+    const {userName} = req.query;
+    const games = await Game.query()
+    .withGraphJoined('score')
+    .where('userName', '=', userName)
+    res.status(200).json({ status: 'success', score: games })
+});
+
+gamesRouter.post('/saveGames', async (req, res) =>{
+   // const {userName, gameID} = req.body;
+    console.log(req.body);
+    res.status(200).json({ status: 'success'})
+});
+
 gamesRouter.get('/:gameID', async (req, res) => {
   const gameID = parseInt(req.params.gameID);
   
@@ -56,6 +70,10 @@ function generateNumber()
   
 }
 
+
+async function geAllGamesUn(userName){
+    return await Game.query(userName);
+}
 async function getGame(gameID) {
     return await Game.query().findById(gameID);
   }
