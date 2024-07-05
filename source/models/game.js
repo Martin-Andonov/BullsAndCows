@@ -1,5 +1,6 @@
 import { Model } from 'objection';
 import { Score } from './score.js';
+import { Guess } from './guesses.js';
 
 export class Game extends Model {
 
@@ -17,6 +18,14 @@ export class Game extends Model {
             join:{
                 from:'games.id',
                 to: 'scores.gameId'
+            }
+        },
+        guesses:{
+            relation: Model.HasManyRelation,
+            modelClass: Guess,
+            join:{
+                from:'games.id',
+                to: 'guesses.gameId'
             }
         }
     }
