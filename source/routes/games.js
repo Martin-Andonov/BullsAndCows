@@ -58,10 +58,10 @@ gamesRouter.get('/', async (req, res) => {
     
     const games = await getAllGames();
     
-    
       res.status(200).json({ status: 'success', games_list: games });
   });
 
+  
 gamesRouter.post('/start', async (req, res) => {
 
   const result = await createGame(generateNumber());
@@ -107,4 +107,4 @@ async function createGame(generatedNumber)
   numberToGuess:generatedNumber 
   })
 }
-  export {gamesRouter};
+export {gamesRouter};
