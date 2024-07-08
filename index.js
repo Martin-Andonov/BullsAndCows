@@ -6,7 +6,6 @@ import { Score } from './source/models/score.js';
 import { Game } from './source/models/game.js';
 import { Guess } from './source/models/guess.js';
 import { gamesRouter } from './source/routes/games.js';
-import { guessRouter } from './source/routes/guesses.js';
 
 
 const app = express();
@@ -15,7 +14,6 @@ const knexClient = knex(knexConfig.development);
 Model.knex(knexClient);
 app.use(json());
 app.use('/games',gamesRouter);
-app.use('/guess',guessRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!!!!`);
