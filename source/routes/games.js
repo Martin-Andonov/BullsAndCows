@@ -1,6 +1,7 @@
 import express from 'express';
 import { Router } from 'express';
 import { Game } from './../models/game.js'; 
+import { Score } from './../models/score.js'
 const gamesRouter = Router();
 
 gamesRouter.get('/end', (req, res) => {
@@ -26,16 +27,29 @@ gamesRouter.get('/gameRanking', async (req, res) =>{
         pageNumber: pageNumber,
         games: gamesForPage
     })
-}
+    }
     catch{
     res.status(404).json({status:'fail', message: 'Game ranking not available'})
     }
     
 })
-gamesRouter.post('/saveGames', async (req, res) =>{
-   // const {userName, gameID} = req.body;
-    console.log(req.body);
-    res.status(200).json({ status: 'success'})
+
+
+gamesRouter.post('/:gameId/result', async (req, res) => {
+    const { userName } = req.body;
+    const gameId  = parseInt(req.params.gameId);
+    
+    if (!(/^[a-zA-Z0-9]{5,20}$/.test(userName))) {
+        return res.status(400).json({ status: 'fail', message: 'username is required' });
+    }
+    
+    try {
+        enterUsername(userName, gameId);
+        res.status(200).json({ status: 'success', message: 'Success' });
+    } catch (error) {
+        console.error('Error saving game result:', error);
+        res.status(500).json({ status: 'error', message: 'Internal server error' });
+    }
 });
 
 gamesRouter.get('/:gameID', async (req, res) => {
@@ -90,13 +104,20 @@ function generateNumber()
   
 }
 
-
-async function geAllGamesUn(userName){
-    return await Game.query(userName);
+async function enterUsername(userName, gameId){
+    return await Score.query().insert({
+        
+        gameId: gameId,
+        userName:userName
+    }
+    );
 }
+
+
 async function getGame(gameID) {
     return await Game.query().findById(gameID);
-  }
+}
+
 async function getAllGames(){
     return await Game.query();
 }
