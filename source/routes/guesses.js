@@ -4,31 +4,14 @@ import { Game } from './../models/game.js';
 
 const guessRouter = Router();
 
-guessRouter.get('/:guessID', async (req, res) => {
-    const guessID = parseInt(req.params.guessID);
+guessRouter.get('/:gameId/guesses', async (req, res) => {
+    const gameId = parseInt(req.params.gameId);
  
-    if (!guessID) {
-      return res.status(400).json({ status: 'fail', message: 'Guess Id is required!'});
-    }
-
-    const guess = await getGuessesById(guessID);
-  
-    if (guess) {
-      res.status(200).json({ status: 'success', guess});
-    } else {
-      res.status(404).json({ status: 'fail', message: 'No guess found!' });
-    }
-});
-
-
-guessRouter.get('/by-game/:gameID', async (req, res) => {
-    const gameID = parseInt(req.params.gameID);
- 
-    if (!gameID || !await Game.query().findById(gameID)) {
+    if (!gameId || !await Game.query().findById(gameId)) {
       return res.status(400).json({ status: 'fail', message: 'Invalid gameId chek if game with that id exists!'});
     }
 
-    const guesses = await getAllGuessesByGameId(gameID);
+    const guesses = await getAllGuessesByGameId(gameId);
   
     if (guesses) {
       res.status(200).json({ status: 'success', guesses });
@@ -38,21 +21,21 @@ guessRouter.get('/by-game/:gameID', async (req, res) => {
 });
 
 
-guessRouter.post("/create/:gameID", async(req,res) => 
+guessRouter.post("/create/:gameId", async(req,res) => 
 {
   const guess = String(req.body["guess"]);
-  const gameID = parseInt(req.params.gameID);
+  const gameId = parseInt(req.params.gameId);
   
   if (!/^(?!.*(.).*\1)\d{4}$/.test(guess)) 
   {
     return res.status(400).json({ status: 'fail', message: 'Error no guess or invalid guess provided!'});
   }
   
-  if (!gameID) {
+  if (!gameId) {
     return res.status(400).json({ status: 'fail', message: 'Invalid gameId!'});
   }
 
-  const game = await Game.query().findById(gameID);
+  const game = await Game.query().findById(gameId);
 
   if(!game)
   {
@@ -60,9 +43,9 @@ guessRouter.post("/create/:gameID", async(req,res) =>
   } 
 
   let animals = checkBullsAndCows(game,guess);
-  let hasGuessed = animals.bullsCount === 4;
+  const hasGuessed = animals.bullsCount === 4;
 
-  const result = await createGuessForGame(gameID,guess,animals.bullsCount,animals.cowsCount);
+  const result = await createGuessForGame(gameId,guess,animals.bullsCount,animals.cowsCount);
 
   if (result) {
     return res.status(200).json({ status: 'success', bullsCount:animals.bullsCount, cowsCount:animals.cowsCount, hasGuessed:hasGuessed});
