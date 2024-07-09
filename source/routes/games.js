@@ -13,25 +13,20 @@ gamesRouter.get('/viewGames', async (req, res) =>{
     const games = await Game.query()
     .withGraphJoined('score')
     .where('userName', '=', userName)
-    res.status(200).json({ status: 'success', score: games })
+    res.status(200).json({ status: 'success', games_with_scores: games })
 });
 
 gamesRouter.get('/gameRanking', async (req, res) =>{
     const pageSize = req.query.pageSize;
     const pageNumber = parseInt(req.query.page) || 1;
     const gamesForPage = await Game.query().page(pageNumber-1, pageSize);
-    try{
     res.status(200).json({ 
         status: 'success', 
         pageSize: pageSize,
         pageNumber: pageNumber,
         games: gamesForPage
     })
-    }
-    catch{
-    res.status(404).json({status:'fail', message: 'Game ranking not available'})
-    }
-    
+
 })
 
 
