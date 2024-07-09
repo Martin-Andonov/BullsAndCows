@@ -2,7 +2,6 @@ import knex from 'knex';
 import knexConfig from './knexfile.js';
 import express, { json } from 'express';
 import { Model } from 'objection';
-import { Score } from './source/models/score.js';
 import { gamesRouter } from './source/routes/games.js';
 
 
