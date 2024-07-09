@@ -1,6 +1,6 @@
 import { Model } from 'objection';
 import { Score } from './score.js';
-import { Guess } from './guesses.js';
+import { Guess } from './guess.js';
 
 export class Game extends Model {
 
