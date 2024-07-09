@@ -25,7 +25,8 @@ guessRouter.post("/create/:gameId", async(req,res) =>
 {
   const guess = String(req.body["guess"]);
   const gameId = parseInt(req.params.gameId);
-  
+  const numberOfBullsToWin = 4;
+
   if (!/^(?!.*(.).*\1)\d{4}$/.test(guess)) 
   {
     return res.status(400).json({ status: 'fail', message: 'Error no guess or invalid guess provided!'});
@@ -43,7 +44,7 @@ guessRouter.post("/create/:gameId", async(req,res) =>
   } 
 
   let animals = checkBullsAndCows(game,guess);
-  const hasGuessed = animals.bullsCount === 4;
+  const hasGuessed = animals.bullsCount === numberOfBullsToWin;
 
   const result = await createGuessForGame(gameId,guess,animals.bullsCount,animals.cowsCount);
 
