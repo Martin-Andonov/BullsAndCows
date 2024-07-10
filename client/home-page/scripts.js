@@ -29,3 +29,4 @@ document.addEventListener('DOMContentLoaded', (event) => {
     updateRandomNumber();
     setInterval(updateRandomNumber, 1000);
 });
+
