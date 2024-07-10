@@ -76,7 +76,7 @@ gamesRouter.post('/start', async (req, res) => {
   const result = await createGame(generateNumber());
 
   if (result) {
-    res.status(200).json({ status: 'success', gameid:result.id});
+    res.status(200).json({ status: 'success', gameId:result.id});
   } else {
     res.status(404).json({ status: 'fail', message: 'Error while creating game!' });
   }
