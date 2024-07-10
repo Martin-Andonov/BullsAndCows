@@ -199,3 +199,8 @@ li{
 .end-game{
     margin-bottom: 5vh;
 }
+
+.modal-title{
+    font-size: x-large;
+    font-style: bold;
+}
