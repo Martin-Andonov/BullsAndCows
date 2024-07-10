@@ -1,6 +1,8 @@
 
 let numberOfGuesses = 0;
 let baseUrl = "http://localhost:3000";
+var modal = document.getElementById("myModal");
+
 
 document.getElementById("submit").addEventListener("click", async function(event){
     event.preventDefault();
@@ -24,8 +26,13 @@ document.getElementById("submit").addEventListener("click", async function(event
             if(serverResponse["bullsCount"] == 4 || serverResponse["hasGuessed"] == true )
             {
                 console.log("win");
-                //create saveGame
+                //create modals saveGame
                 createElementGuess(number,serverResponse["cowsCount"],serverResponse["bullsCount"],serverResponse["hasGuessed"])
+                modal.style.display = "block";
+                modal.classList.add('modal-display-properties');
+                
+                document.getElementById("submit").setAttribute('disabled',"");
+
             }else{
                 createElementGuess(number,serverResponse["cowsCount"],serverResponse["bullsCount"],serverResponse["hasGuessed"]);
             }
@@ -34,6 +41,11 @@ document.getElementById("submit").addEventListener("click", async function(event
     }
 });
 
+window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+}
 
 async function getData(guess)
 {
