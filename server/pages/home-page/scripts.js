@@ -1,4 +1,4 @@
-import { getFrontEndUrl } from "../utils/utils";
+import { getFrontEndUrl } from "/static/utils/utils.js";
 
 function getRandomFourDigitNumber() {
     let digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -27,22 +27,32 @@ function updateRandomNumber() {
     document.getElementById('randomNumber').textContent = getRandomFourDigitNumber();
 }
 
-const createGame = async ()  =>{
+document.addEventListener('DOMContentLoaded', (event) => {
+    updateRandomNumber();
+    setInterval(updateRandomNumber, 1000);
+});
+
+async function createGame (){
     console.log("here");
     const result = await fetch('http://127.0.0.1:3000/games/start', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'}
     });
     const {status, gameId} = await result.json();
-    // if(status === 'success'){
-    //     window.location = getFrontEndUrl(`game?gameId=${gameId}`);
-    // }
+    if(status === 'success'){
+        window.location.href = getFrontEndUrl(`game?gameId=${gameId}`);
+    }
 
 }
+// window.createGame = createGame;
 
 (async () => {
     document.addEventListener('DOMContentLoaded', (event) => {
         updateRandomNumber();
         setInterval(updateRandomNumber, 1000);
     });
-})()
+
+    document.getElementById("play-button").addEventListener('click', (event) => {
+        createGame();
+    })
+})();
