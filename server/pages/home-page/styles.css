@@ -20,6 +20,7 @@ body {
 
 .header-h1 {
     font-family: 'Arcade';
+    font-family: 'Arcade';
 }
 
 .button-container {
@@ -37,6 +38,7 @@ body {
     font-weight: bold;
     transition: background-color 0.3s ease, transform 0.3s ease; 
     font-family: 'Arcade';
+    font-family: 'Arcade';
 }
 
 .nav-button:hover, .play-button:hover {
@@ -52,6 +54,7 @@ body {
     font-size: 3em;
     color: #ff6969; 
     font-family: 'Arcade';
+    font-family: 'Arcade';
 }
 
 header {
@@ -62,9 +65,10 @@ header {
     margin: 10px;
     text-align: center;
     font-family: 'Arcade';
+    font-family: 'Arcade';
     color: #ff69b4; 
 }
 
-.cursor:hover{
+.cursor:hover {
     cursor: pointer;
 }
