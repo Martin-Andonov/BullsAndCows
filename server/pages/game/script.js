@@ -7,14 +7,64 @@ let numberOfGuesses = 0;
 let baseUrl = "http://localhost:3000";
 var modal = document.getElementById("myModal");
 
+window.onload = async function()
+{
+    const gameId = getGameId();
+
+    const result = await fetch(generataFullUrl("/games/" + gameId), {method: 'GET'});
+    const {status} = await result.json();
+
+    if(status === 'found')
+    {
+        const serverResponse = await fetch(generataFullUrl("/guess/" + gameId +"/guesses/"));
+       
+        if(serverResponse["status"] === "fail")
+        {
+                createElementError("Internal server error!");
+        }else {
+            
+            const data = await serverResponse.json();
+            
+            for (let element of data["guess"]) {
+                    console.log();
+                                
+                if(element["bullsCount"] == 4)
+                {
+
+                    createElementGuess(element["guess"],element["cowsCount"],element["bullsCount"],true);
+                    modal.style.display = "block";
+                    modal.classList.add('modal-display-properties');        
+                    document.getElementById("submit").setAttribute('disabled',"");                    
+                }else{
+                    createElementGuess(element["guess"],element["cowsCount"],element["bullsCount"],false);
+                }
+            }
+        }
+    }else{
+        // we play like normal
+    }
+    
+}
+
 document.getElementById("end-game").addEventListener("click",async function(event){
     event.preventDefault();
-    loadLeaderboard();
-})
+    const userName = document.getElementById("username").value;
+    
+    if(!(/^[a-zA-Z0-9]{2,20}$/.test(userName)))
+    {
+        console.log("Error in validation!");
+        //add error display
+
+    }else{
+        await saveGame(getGameId(),userName);
+    }
+
+});
+
 document.getElementById("view-leadeboard").addEventListener("click", async function(event){
     event.preventDefault();
     loadLeaderboard();
-})
+});
 
 document.getElementById("logo").addEventListener("click",async function(event){
     event.preventDefault();
@@ -41,13 +91,13 @@ document.getElementById("submit").addEventListener("click", async function(event
     event.preventDefault();
     const number = document.getElementById("guessInput").value;
    
-
+    
+    numberOfGuesses++;
     if (!/^(?!.*(.).*\1)\d{4}$/.test(number)) 
     {
         console.log("Error in validation!");
         createElementError("Enter number consisting of 4 unique digits!");
     }else{
-        numberOfGuesses++;
 
         let serverResponse = await getData(number,getGameId());
         
@@ -79,6 +129,24 @@ function loadLeaderboard()
 function loadHomePage()
 {
     window.location.href = getHomeUrl();
+}
+
+async function saveGame(gameId,userName)
+{
+
+    
+    const result = await fetch(generataFullUrl("/games/" + gameId + "/result"), {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ "userName": userName }),
+    });
+
+    const {status, message} = await result.json();
+
+    if(status === 'success')
+    {
+        loadLeaderboard();
+    }
 }
 
 async function endGame(gameId)
@@ -120,7 +188,7 @@ window.onclick = function(event) {
 }
 function getGameId()
 {
-    return getQueryParameters()["gameId"];
+    return getQueryParameters().gameId;
 }
 
 async function getData(guess,gameId)
@@ -157,6 +225,11 @@ function createElementError(string)
     errorDisplayDiv.textContent = string;
     newLi.append(errorDisplayDiv);
     document.querySelector('.guess-list').appendChild(newLi);
+    if(numberOfGuesses > 5)
+        {
+                document.getElementById("guess-list").style.height = String(document.getElementById("guess-list").offsetHeight + 50) + "px"
+                document.getElementById("guess-list").style.paddingBottom = '2.5vh';
+        }
 }
 
 function createElementGuess(guess,bulls,cows,hasGuessed)
@@ -185,6 +258,12 @@ function createElementGuess(guess,bulls,cows,hasGuessed)
     
     newLi.appendChild(guessDisplayDiv);
     newLi.appendChild(numberOfAnimalsContainerDiv);
+    
+    if(numberOfGuesses > 5)
+    {
+            document.getElementById("guess-list").style.height = String(document.getElementById("guess-list").offsetHeight + 50) + "px"
+            document.getElementById("guess-list").style.paddingBottom = '2.5vh';
+    } 
     
     document.querySelector('.guess-list').appendChild(newLi);
 }

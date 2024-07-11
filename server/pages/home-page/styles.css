@@ -1,10 +1,9 @@
-/* Define the Arcade font */
 @font-face {
     font-family: 'Arcade';
     src: url('../assets/arcade.ttf') format('truetype');
 }
 body {
-    font-family: 'Arcade', Arial, sans-serif;
+    font-family: 'Arcade';
     background-image: url("./background_image.png");
     background-position: center;
     background-repeat: no-repeat;
@@ -18,7 +17,9 @@ body {
     color: #ffffff; 
 }
 
+
 .header-h1 {
+    font-family: 'Arcade';
     font-family: 'Arcade';
 }
 
@@ -37,6 +38,7 @@ body {
     font-weight: bold;
     transition: background-color 0.3s ease, transform 0.3s ease; 
     font-family: 'Arcade';
+    font-family: 'Arcade';
 }
 
 .nav-button:hover, .play-button:hover {
@@ -52,6 +54,7 @@ body {
     font-size: 3em;
     color: #ff6969; 
     font-family: 'Arcade';
+    font-family: 'Arcade';
 }
 
 header {
@@ -61,6 +64,7 @@ header {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: 10px;
     text-align: center;
+    font-family: 'Arcade';
     font-family: 'Arcade';
     color: #ff69b4; 
 }
