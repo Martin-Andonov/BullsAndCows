@@ -16,15 +16,11 @@ async function getLeaderboardData(){
 
     if(status === 'success')
     {
-        console.log(games);
+        displayData(games);
     }
 }
 
-//temp
-document.getElementById('myButton').addEventListener('click', function() {
-  document.getElementById('message').textContent = 'Hello, World!';
-});
-//-----------
+
 
 document.getElementById("new-game-navbar").addEventListener("click",async function(event){
 event.preventDefault();
@@ -56,11 +52,41 @@ async function startNewGame()
     }
 }
 
-function displayData()
+function displayData(data)
 {
-  //will display the leaderboard 
-  //omitted untill frontend is ready
+  for(let element of data)
+  {
+    console.log()
+    createElementGuess(element["score"]["userName"],element["score"]["numberOfAttempts"])
+  }
 }
+
+
+
+function createElementGuess(userName,numberOfGuesses)
+{
+    const newLi = document.createElement('li');
+
+    const guessDisplayDiv = document.createElement('div');
+    guessDisplayDiv.className = 'guess-display';
+    guessDisplayDiv.textContent = userName; 
+    
+    const numberOfGuess = document.createElement('div');
+    numberOfGuess.className = 'count';
+    numberOfGuess.textContent = numberOfGuesses; 
+
+    const numberOfAnimalsContainerDiv = document.createElement('div');
+    numberOfAnimalsContainerDiv.className = 'number-of-animals-container';
+    
+    
+    numberOfAnimalsContainerDiv.appendChild(numberOfGuess);
+    
+    newLi.appendChild(guessDisplayDiv);
+    newLi.appendChild(numberOfAnimalsContainerDiv);
+    
+    document.querySelector('.list').appendChild(newLi);
+}
+
 
 function loadLeaderboard()
 {
