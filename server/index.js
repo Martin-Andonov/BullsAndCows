@@ -12,7 +12,6 @@ const knexClient = knex(knexConfig.development);
 Model.knex(knexClient);
 app.use(cors());
 app.use(json());
-app.use(cors());
 app.use('/static', express.static('./pages'));
 app.use('/games',gamesRouter);
 app.use('/guess',guessRouter);
