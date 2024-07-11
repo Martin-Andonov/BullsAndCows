@@ -2,6 +2,7 @@ import { getCurrentUrl } from "/static/utils/utils.js";
 import { getFrontEndUrl } from "/static/utils/utils.js";
 import { getHomeUrl } from "/static/utils/utils.js";
 import { getLeaderboardUrl } from "/static/utils/utils.js";
+import {getQueryParameters} from "/static/utils/utils.js";
 let numberOfGuesses = 0;
 let baseUrl = "http://localhost:3000";
 var modal = document.getElementById("myModal");
@@ -49,7 +50,7 @@ document.getElementById("submit").addEventListener("click", async function(event
         numberOfGuesses++;
 
         let serverResponse = await getData(number,getGameId());
-        console.log(serverResponse); 
+        
 
         if(serverResponse["status"] == "fail")
         {
@@ -57,7 +58,7 @@ document.getElementById("submit").addEventListener("click", async function(event
         }else {
             if(serverResponse["bullsCount"] == 4 || serverResponse["hasGuessed"] == true )
             {
-                console.log("Congrats you won!");
+                
                 await endGame(getGameId());
 
                 createElementGuess(number,serverResponse["cowsCount"],serverResponse["bullsCount"],serverResponse["hasGuessed"])
@@ -95,7 +96,7 @@ async function endGame(gameId)
 
     if(status === 'success')
     {
-        console.log(message);
+        
     }
 }
 async function startNewGame()
@@ -112,6 +113,7 @@ async function startNewGame()
         window.location.href = getFrontEndUrl(`game?gameId=${gameId}`);
     }
 }
+
 window.onclick = function(event) {
     if (event.target == modal) {
       modal.style.display = "none";
@@ -119,7 +121,7 @@ window.onclick = function(event) {
 }
 function getGameId()
 {
-    return getCurrentUrl()["search"].split("=")[1];
+    return getQueryParameters()["gameId"];
 }
 
 async function getData(guess,gameId)

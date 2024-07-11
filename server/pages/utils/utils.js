@@ -8,6 +8,15 @@ export function getCurrentUrl()
     return window.location;
 }
 
+export function getQueryParameters()
+{
+    return getCurrentUrl()["search"].replace('?','').split("&").reduce( (acc,curr) => {
+        const [key, value] = curr.split("=");
+        acc[key] = value;
+        return acc;
+    }, {});
+}
+
 export function getHomeUrl()
 {
     return window.location.origin + "/static/home-page/index.html";

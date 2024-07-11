@@ -17,7 +17,7 @@ document.getElementById("submit").addEventListener("click", async function(event
         numberOfGuesses++;
 
         let serverResponse = await getData(number);
-        console.log(serverResponse); 
+        
 
         if(serverResponse["status"] == "fail")
         {
@@ -25,7 +25,6 @@ document.getElementById("submit").addEventListener("click", async function(event
         }else {
             if(serverResponse["bullsCount"] == 4 || serverResponse["hasGuessed"] == true )
             {
-                console.log("win");
                 //create modals saveGame
                 createElementGuess(number,serverResponse["cowsCount"],serverResponse["bullsCount"],serverResponse["hasGuessed"])
                 modal.style.display = "block";
