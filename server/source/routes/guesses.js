@@ -14,7 +14,7 @@ guessRouter.get('/:gameId/guesses', async (req, res) => {
     const guesses = await getAllGuessesByGameId(gameId);
   
     if (guesses) {
-      res.status(200).json({ status: 'success', guesses });
+      res.status(200).json({ status: 'success', guess:guesses });
     } else {
       res.status(404).json({ status: 'fail', message: 'Error while getting guesses!' });
     }

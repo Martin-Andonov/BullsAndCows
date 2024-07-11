@@ -17,17 +17,14 @@ gamesRouter.get('/viewGames', async (req, res) =>{
 });
 
 gamesRouter.get('/gameRanking', async (req, res) =>{
-    const pageSize = req.query.pageSize;
-    const pageNumber = parseInt(req.query.page) || 1;
-    const gamesForPage = await Game.query().withGraphJoined('score').orderBy('score.number_of_attempts','desc').page(pageNumber-1, pageSize);
-    res.status(200).json({ 
-        status: 'success', 
-        pageSize: pageSize,
-        pageNumber: pageNumber,
-        games: gamesForPage
-    })
 
-})
+  try{
+    const games = await Game.query().withGraphJoined('score').whereNotNull('score.number_of_attempts').orderBy('score.number_of_attempts', 'asc').limit(10);
+ res.status(200).json({status: 'success',games: games})
+  }catch{
+    res.status(500).json({ status: 'error', message: 'Internal server error' });
+  }
+});
 
 gamesRouter.post('/:gameId/end', async(req,res) => {
   const gameId = parseInt(req.params.gameId);
@@ -47,10 +44,11 @@ gamesRouter.post('/:gameId/end', async(req,res) => {
 });
 
 gamesRouter.post('/:gameId/result', async (req, res) => {
-    const { userName } = req.body;
+  
+    const  userName  = req.body["userName"];
     const gameId  = parseInt(req.params.gameId);
     
-    if (!(/^[a-zA-Z0-9]{5,20}$/.test(userName))) {
+    if (!(/^[a-zA-Z0-9]{2,20}$/.test(userName))) {
         return res.status(400).json({ status: 'fail', message: 'username is required' });
     }
   
@@ -74,9 +72,9 @@ gamesRouter.get('/:gameID', async (req, res) => {
   const game = await getGame(gameID);
 
   if (game) {
-    res.status(200).json({ status: 'success', game });
+    res.status(200).json({ status: 'found'});
   } else {
-    res.status(404).json({ status: 'fail', message: 'No game found' });
+    res.status(200).json({ status: 'not found'});
   }
 });
 
