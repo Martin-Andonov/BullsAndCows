@@ -1,5 +1,10 @@
+@font-face {
+    font-family: 'Arcade';
+    src: url('../assets/arcade.ttf') format('truetype');
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arcade';
     display: flex;
     justify-content: center;
     align-items: start;
@@ -65,6 +70,7 @@ body {
 }
 
 .navbar-button{
+  font-family: 'Arcade';
   height: 50%;
   width: 40%;
   background-color: lightblue;
@@ -95,6 +101,7 @@ body {
   
   button {
     padding: 10px 20px;
+    font-family: 'Arcade';
     font-size: 16px;
     cursor: pointer;
     background-color: #ff69b4; 
