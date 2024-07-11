@@ -116,10 +116,6 @@ function generateNumber()
   
 }
 
-async function updateEndGame(gameId)
-{
-  return await Game.query().findById(gameId).patch({end_time: new Date().toISOString()});
-}
 
 async function updateEndGame(gameId)
 {
