@@ -91,13 +91,13 @@ document.getElementById("submit").addEventListener("click", async function(event
     event.preventDefault();
     const number = document.getElementById("guessInput").value;
    
-
+    
+    numberOfGuesses++;
     if (!/^(?!.*(.).*\1)\d{4}$/.test(number)) 
     {
         console.log("Error in validation!");
         createElementError("Enter number consisting of 4 unique digits!");
     }else{
-        numberOfGuesses++;
 
         let serverResponse = await getData(number,getGameId());
         
@@ -225,6 +225,11 @@ function createElementError(string)
     errorDisplayDiv.textContent = string;
     newLi.append(errorDisplayDiv);
     document.querySelector('.guess-list').appendChild(newLi);
+    if(numberOfGuesses > 5)
+        {
+                document.getElementById("guess-list").style.height = String(document.getElementById("guess-list").offsetHeight + 50) + "px"
+                document.getElementById("guess-list").style.paddingBottom = '2.5vh';
+        }
 }
 
 function createElementGuess(guess,bulls,cows,hasGuessed)
@@ -253,6 +258,12 @@ function createElementGuess(guess,bulls,cows,hasGuessed)
     
     newLi.appendChild(guessDisplayDiv);
     newLi.appendChild(numberOfAnimalsContainerDiv);
+    
+    if(numberOfGuesses > 5)
+    {
+            document.getElementById("guess-list").style.height = String(document.getElementById("guess-list").offsetHeight + 50) + "px"
+            document.getElementById("guess-list").style.paddingBottom = '2.5vh';
+    } 
     
     document.querySelector('.guess-list').appendChild(newLi);
 }

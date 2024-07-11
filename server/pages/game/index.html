@@ -24,21 +24,20 @@
 
     <div class="sticky-container">
         <div class="navbar">
-            <div class="logo" id="logo">bulls&cows</div>
-            <img src="../assets/logo.svg" alt="Logo" class="logo-svg">
+            <img src="../assets/logo.svg" alt="Logo" id="logo" class="logo-svg logo">
             <div class="navbar-buttons-container">
-                <button class="navbar-button" id="new-game-navbar">new game</button>
-                <button class="navbar-button" id="view-leadeboard">view leaderboard</button>
+                <button class="navbar-button min-size2 button" id="new-game-navbar">new game</button>
+                <button class="navbar-button min-size button" id="view-leadeboard">view leaderboard</button>
             </div>
         </div>
         <div class="input-guess">
             <input class="number-input" type="text" id="guessInput" placeholder="Enter your guess" maxlength="4" required>
-            <button class="submit-button" type="submit" id="submit">Submit</button>
+            <button class="submit-button button" type="submit" id="submit">Submit</button>
         </div>
     </div>
 
     <div class="guesses-container">
-        <ul class="guess-list">
+        <ul class="guess-list" id="guess-list">
 
 
         </ul>
