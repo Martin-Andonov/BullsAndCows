@@ -56,16 +56,12 @@ document.getElementById("submit").addEventListener("click", async function(event
         {
             createElementError(serverResponse["message"])
         }else {
-            if(serverResponse["bullsCount"] == 4 || serverResponse["hasGuessed"] == true )
+            if(serverResponse["bullsCount"] == 4 && serverResponse["hasGuessed"] == true )
             {
                 
                 await endGame(getGameId());
 
                 createElementGuess(number,serverResponse["cowsCount"],serverResponse["bullsCount"],serverResponse["hasGuessed"])
-                modal.style.display = "block";
-                modal.classList.add('modal-display-properties');
-                
-                document.getElementById("submit").setAttribute('disabled',"");
 
             }else{
                 createElementGuess(number,serverResponse["cowsCount"],serverResponse["bullsCount"],serverResponse["hasGuessed"]);
@@ -96,7 +92,10 @@ async function endGame(gameId)
 
     if(status === 'success')
     {
-        
+        modal.style.display = "block";
+        modal.classList.add('modal-display-properties');        
+        document.getElementById("submit").setAttribute('disabled',"");
+
     }
 }
 async function startNewGame()
