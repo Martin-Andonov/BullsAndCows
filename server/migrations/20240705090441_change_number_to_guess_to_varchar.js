@@ -16,5 +16,11 @@ export async function up (knex) {
  * @returns { Promise<void> }
  */
 export async function down(knex) {
+    await knex.schema.alterTable("games",function(table) {
+        table.dropColumn('number_to_guess');
+    });
+    await knex.schema.alterTable("games", function(table) {
+        table.integer('number_to_guess', 4).notNullable();
+    });
 
 };
