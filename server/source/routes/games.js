@@ -19,7 +19,7 @@ gamesRouter.get('/viewGames', async (req, res) =>{
 gamesRouter.get('/gameRanking', async (req, res) =>{
     const pageSize = req.query.pageSize;
     const pageNumber = parseInt(req.query.page) || 1;
-    const gamesForPage = await Game.query().page(pageNumber-1, pageSize);
+    const gamesForPage = await Game.query().withGraphJoined('score').orderBy('score.number_of_attempts','desc').page(pageNumber-1, pageSize);
     res.status(200).json({ 
         status: 'success', 
         pageSize: pageSize,
@@ -37,9 +37,10 @@ gamesRouter.post('/:gameId/result', async (req, res) => {
     if (!(/^[a-zA-Z0-9]{5,20}$/.test(userName))) {
         return res.status(400).json({ status: 'fail', message: 'username is required' });
     }
-    
+  
     try {
-        enterUsername(userName, gameId);
+      const game = await getGame(gameId);
+        enterUsername(userName, gameId, game.guesses.length);
         res.status(200).json({ status: 'success', message: 'Success' });
     } catch (error) {
         console.error('Error saving game result:', error);
@@ -76,7 +77,7 @@ gamesRouter.post('/start', async (req, res) => {
   const result = await createGame(generateNumber());
 
   if (result) {
-    res.status(200).json({ status: 'success', gameid:result.id});
+    res.status(200).json({ status: 'success', gameId:result.id});
   } else {
     res.status(404).json({ status: 'fail', message: 'Error while creating game!' });
   }
@@ -99,18 +100,19 @@ function generateNumber()
   
 }
 
-async function enterUsername(userName, gameId){
+async function enterUsername(userName, gameId, guessCount){
     return await Score.query().insert({
         
         gameId: gameId,
-        userName:userName
+        userName:userName,
+        numberOfAttempts: guessCount
     }
     );
 }
 
 
 async function getGame(gameID) {
-    return await Game.query().findById(gameID);
+    return await Game.query().withGraphJoined('guesses').findById(gameID);
 }
 
 async function getAllGames(){

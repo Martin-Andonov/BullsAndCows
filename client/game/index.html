@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>bulls and cows</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+        <dvi class="modal-title">Congrats you won!</dvi> 
+        <input class="modal-input" type="text" id="username" placeholder="Enter your username"  maxlength="20" required>
+        <div class="modal-button-container">
+            <button class="home-page modal-button" type="submit" id="home-page">home page</button>
+            <button class="new-game modal-button" type="submit" id="new-game">new game</button>
+            <button class="end-game modal-button" type="submit" id="end-game">add game to leaderboard</button>
+        </div>
+
+        </div>
+        
+    </div>
+
+    <div class="sticky-container">
+        <div class="navbar">
+            <div class="logo">Logo</div>
+            <div class="navbar-buttons-container">
+                <button class="navbar-button">Button 1</button>
+                <button class="navbar-button">Button 2</button>
+            </div>
+        </div>
+        <div class="input-guess">
+            <input class="number-input" type="text" id="guessInput" placeholder="Enter your guess" maxlength="4" required>
+            <button class="submit-button" type="submit" id="submit">Submit</button>
+        </div>
+    </div>
+
+    <div class="guesses-container">
+        <ul class="guess-list">
+
+
+        </ul>
+    </div>
+</body>
+
+<script src="script.js"></script>
+</html>
