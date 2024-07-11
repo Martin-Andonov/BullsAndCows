@@ -44,9 +44,10 @@ guessRouter.post("/create/:gameId", async(req,res) =>
     return res.status(400).json({ status: 'fail', message: 'No game with that Id exists!'});
   } 
 
+
   let animals = checkBullsAndCows(game,guess);
   const hasGuessed = animals.bullsCount === numberOfBullsToWin;
-
+  
   const result = await createGuessForGame(gameId,guess,animals.bullsCount,animals.cowsCount);
 
   if (result) {

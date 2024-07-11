@@ -1,5 +1,8 @@
 import { getFrontEndUrl } from "/static/utils/utils.js";
 
+import { getHomeUrl } from "/static/utils/utils.js";
+import { getLeaderboardUrl } from "/static/utils/utils.js";
+
 function getRandomFourDigitNumber() {
     let digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     shuffleArray(digits);
@@ -33,7 +36,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 async function createGame (){
-    console.log("here");
+    
     const result = await fetch('http://127.0.0.1:3000/games/start', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'}
@@ -54,5 +57,14 @@ async function createGame (){
 
     document.getElementById("play-button").addEventListener('click', (event) => {
         createGame();
+    })
+
+    document.getElementById("home").addEventListener("click", (event) => {
+        window.location.href = getHomeUrl();
+    })
+
+    
+    document.getElementById("ranking").addEventListener("click", (event) => {
+        window.location.href = getLeaderboardUrl();
     })
 })();

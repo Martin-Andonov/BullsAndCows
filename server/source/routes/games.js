@@ -29,6 +29,22 @@ gamesRouter.get('/gameRanking', async (req, res) =>{
 
 })
 
+gamesRouter.post('/:gameId/end', async(req,res) => {
+  const gameId = parseInt(req.params.gameId);
+
+  if(!gameId)
+  {
+    return res.status(400).json({ status: 'fail', message: 'Error no guess or invalid end game provided!'});
+  }
+  
+  try{
+    updateEndGame(gameId);
+    res.status(200).json({ status: 'success', message: 'Successesfully added time!' });
+  } catch(error){
+    console.error('Error saving game result:', error);
+    res.status(500).json({ status: 'error', message: 'Internal server error' });
+  }
+});
 
 gamesRouter.post('/:gameId/result', async (req, res) => {
     const { userName } = req.body;
@@ -98,6 +114,12 @@ function generateNumber()
 
   return generatedNumber;
   
+}
+
+
+async function updateEndGame(gameId)
+{
+  return await Game.query().findById(gameId).patch({end_time: new Date().toISOString()});
 }
 
 async function enterUsername(userName, gameId, guessCount){

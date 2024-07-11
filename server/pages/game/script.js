@@ -1,8 +1,41 @@
-
+import { getCurrentUrl } from "/static/utils/utils.js";
+import { getFrontEndUrl } from "/static/utils/utils.js";
+import { getHomeUrl } from "/static/utils/utils.js";
+import { getLeaderboardUrl } from "/static/utils/utils.js";
+import {getQueryParameters} from "/static/utils/utils.js";
 let numberOfGuesses = 0;
 let baseUrl = "http://localhost:3000";
 var modal = document.getElementById("myModal");
 
+document.getElementById("end-game").addEventListener("click",async function(event){
+    event.preventDefault();
+    loadLeaderboard();
+})
+document.getElementById("view-leadeboard").addEventListener("click", async function(event){
+    event.preventDefault();
+    loadLeaderboard();
+})
+
+document.getElementById("logo").addEventListener("click",async function(event){
+    event.preventDefault();
+    loadHomePage();
+});
+
+document.getElementById("home-page").addEventListener("click",async function(event){
+    event.preventDefault();
+    loadHomePage();
+});
+
+
+document.getElementById("new-game-navbar").addEventListener("click",async function(event){
+    event.preventDefault();
+    startNewGame();
+});
+
+document.getElementById("new-game-modal").addEventListener("click",async function(event){
+    event.preventDefault();
+    startNewGame();
+})
 
 document.getElementById("submit").addEventListener("click", async function(event){
     event.preventDefault();
@@ -16,21 +49,19 @@ document.getElementById("submit").addEventListener("click", async function(event
     }else{
         numberOfGuesses++;
 
-        let serverResponse = await getData(number);
+        let serverResponse = await getData(number,getGameId());
         
 
         if(serverResponse["status"] == "fail")
         {
             createElementError(serverResponse["message"])
         }else {
-            if(serverResponse["bullsCount"] == 4 || serverResponse["hasGuessed"] == true )
+            if(serverResponse["bullsCount"] == 4 && serverResponse["hasGuessed"] == true )
             {
-                //create modals saveGame
-                createElementGuess(number,serverResponse["cowsCount"],serverResponse["bullsCount"],serverResponse["hasGuessed"])
-                modal.style.display = "block";
-                modal.classList.add('modal-display-properties');
                 
-                document.getElementById("submit").setAttribute('disabled',"");
+                await endGame(getGameId());
+
+                createElementGuess(number,serverResponse["cowsCount"],serverResponse["bullsCount"],serverResponse["hasGuessed"])
 
             }else{
                 createElementGuess(number,serverResponse["cowsCount"],serverResponse["bullsCount"],serverResponse["hasGuessed"]);
@@ -40,16 +71,62 @@ document.getElementById("submit").addEventListener("click", async function(event
     }
 });
 
+function loadLeaderboard()
+{
+    window.location.href = getLeaderboardUrl();
+}
+
+function loadHomePage()
+{
+    window.location.href = getHomeUrl();
+}
+
+async function endGame(gameId)
+{
+    const result = await fetch(generataFullUrl("/games/" + gameId + "/end"), {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'}
+    });
+    
+    const {status, message} = await result.json();
+
+    if(status === 'success')
+    {
+        modal.style.display = "block";
+        modal.classList.add('modal-display-properties');        
+        document.getElementById("submit").setAttribute('disabled',"");
+
+    }
+}
+async function startNewGame()
+{
+    const result = await fetch(generataFullUrl("/games/start"), {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'}
+    });
+    
+    const {status, gameId} = await result.json();
+
+    if(status === 'success')
+    {
+        window.location.href = getFrontEndUrl(`game?gameId=${gameId}`);
+    }
+}
+
 window.onclick = function(event) {
     if (event.target == modal) {
       modal.style.display = "none";
     }
 }
+function getGameId()
+{
+    return getQueryParameters()["gameId"];
+}
 
-async function getData(guess)
+async function getData(guess,gameId)
 {
     try {
-        const request = new Request(generataFullUrl("/guess/create/1"), {
+        const request = new Request(generataFullUrl("/guess/create/"+gameId), {
             method: "POST",
             headers: {'Content-Type': 'application/json',},
             body: JSON.stringify({ "guess": guess }),

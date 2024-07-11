@@ -63,3 +63,7 @@ header {
     font-family: 'Comic Sans MS', cursive;
     color: #ff69b4; 
 }
+
+.cursor:hover{
+    cursor: pointer;
+}

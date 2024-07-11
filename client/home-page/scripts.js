@@ -28,7 +28,7 @@ function updateRandomNumber() {
 }
 
 const createGame = async ()  =>{
-    console.log("here");
+    
     const result = await fetch('http://127.0.0.1:3000/games/start', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'}
